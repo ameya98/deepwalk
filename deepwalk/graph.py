@@ -256,6 +256,8 @@ def load_edgelist(file_, undirected=True):
 
       x = int(x)
       y = int(y)
+      w = float(w)
+      
       G[x].append(y)
       G.weights[x][y] = w
 
