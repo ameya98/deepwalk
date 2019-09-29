@@ -121,7 +121,7 @@ class Graph(defaultdict):
     return self.order()
 
   def transition_weights(self, node):
-  "Returns the weights to assign to transitions, which are just scaled edge weights."
+    "Returns the weights to assign to transitions, which are just scaled edge weights."
     weights = [self.weights[node][neighbor] for neighbor in self[node]]
     return weights/np.sum(weights)
     
@@ -257,7 +257,7 @@ def load_edgelist(file_, undirected=True):
       x = int(x)
       y = int(y)
       w = float(w)
-      
+
       G[x].append(y)
       G.weights[x][y] = w
 
