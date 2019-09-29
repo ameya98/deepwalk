@@ -30,6 +30,7 @@ class Graph(defaultdict):
   """Efficient basic implementation of nx `Graph' â€“ Undirected graphs with self loops"""  
   def __init__(self):
     super(Graph, self).__init__(list)
+    self.weights = defaultdict(dict)
 
   def nodes(self):
     return self.keys()
@@ -119,6 +120,11 @@ class Graph(defaultdict):
     "Returns the number of nodes in the graph"
     return self.order()
 
+  def transition_weights(self, node):
+  "Returns the weights to assign to transitions, which are just scaled edge weights."
+    weights = [self.weights[node][neighbor] for neighbor in self[node]]
+    return weights/np.sum(weights)
+    
   def random_walk(self, path_length, alpha=0, rand=random.Random(), start=None):
     """ Returns a truncated random walk.
 
@@ -137,7 +143,7 @@ class Graph(defaultdict):
       cur = path[-1]
       if len(G[cur]) > 0:
         if rand.random() >= alpha:
-          path.append(rand.choice(G[cur]))
+          path.extend(rand.choices(G[cur], weights=G.transition_weights(cur)))
         else:
           path.append(path[0])
       else:
@@ -241,12 +247,21 @@ def load_edgelist(file_, undirected=True):
   G = Graph()
   with open(file_) as f:
     for l in f:
-      x, y = l.strip().split()[:2]
+      split = l.strip().split()
+      if len(split) == 3:
+        x, y, w = split[:3]
+      else:
+        x, y = split[:2]
+        w = 1
+
       x = int(x)
       y = int(y)
       G[x].append(y)
+      G.weights[x][y] = w
+
       if undirected:
         G[y].append(x)
+        G.weights[y][x] = w
   
   G.make_consistent()
   return G
