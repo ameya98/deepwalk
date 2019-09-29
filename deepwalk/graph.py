@@ -17,7 +17,7 @@ from random import shuffle
 from itertools import product,permutations
 from scipy.io import loadmat
 from scipy.sparse import issparse
-
+import numpy
 logger = logging.getLogger("deepwalk")
 
 
@@ -125,7 +125,7 @@ class Graph(defaultdict):
     weights = [self.weights[node][neighbor] for neighbor in self[node]]
     return weights/np.sum(weights)
     
-  def random_walk(self, path_length, alpha=0, rand=random.Random(), start=None):
+  def random_walk(self, path_length, alpha=0, rand=numpy.random.RandomState(0), start=None):
     """ Returns a truncated random walk.
 
         path_length: Length of the random walk.
@@ -143,7 +143,7 @@ class Graph(defaultdict):
       cur = path[-1]
       if len(G[cur]) > 0:
         if rand.random() >= alpha:
-          path.extend(rand.choices(G[cur], weights=G.transition_weights(cur)))
+          path.append(rand.choice(G[cur], p=G.transition_weights(cur)))
         else:
           path.append(path[0])
       else:
