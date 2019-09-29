@@ -9,6 +9,7 @@ from argparse import ArgumentParser, FileType, ArgumentDefaultsHelpFormatter
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 import logging
+import numpy
 
 from . import graph
 from . import walks as serialized_walks
