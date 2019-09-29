@@ -70,7 +70,7 @@ def process(args):
   if data_size < args.max_memory_data_size:
     print("Walking...")
     walks = graph.build_deepwalk_corpus(G, num_paths=args.number_walks,
-                                        path_length=args.walk_length, alpha=0, rand=random.Random(args.seed))
+                                        path_length=args.walk_length, alpha=0, rand=numpy.random.RandomState(args.seed))
     print("Training...")
     model = Word2Vec(walks, size=args.representation_size, window=args.window_size, min_count=0, sg=1, hs=1, workers=args.workers)
   else:
@@ -79,7 +79,7 @@ def process(args):
 
     walks_filebase = args.output + ".walks"
     walk_files = serialized_walks.write_walks_to_disk(G, walks_filebase, num_paths=args.number_walks,
-                                         path_length=args.walk_length, alpha=0, rand=random.Random(args.seed),
+                                         path_length=args.walk_length, alpha=0, rand=numpy.random.RandomState(args.seed),
                                          num_workers=args.workers)
 
     print("Counting vertex frequency...")
