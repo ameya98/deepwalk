@@ -123,7 +123,7 @@ class Graph(defaultdict):
   def transition_weights(self, node):
     "Returns the weights to assign to transitions, which are just scaled edge weights."
     weights = [self.weights[node][neighbor] for neighbor in self[node]]
-    return weights/np.sum(weights)
+    return weights/numpy.sum(weights)
     
   def random_walk(self, path_length, alpha=0, rand=numpy.random.RandomState(0), start=None):
     """ Returns a truncated random walk.
