@@ -142,7 +142,7 @@ class Graph(defaultdict):
     while len(path) < path_length:
       cur = path[-1]
       if len(G[cur]) > 0:
-        if rand.random() >= alpha:
+        if rand.random_sample() >= alpha:
           path.append(rand.choice(G[cur], p=G.transition_weights(cur)))
         else:
           path.append(path[0])
